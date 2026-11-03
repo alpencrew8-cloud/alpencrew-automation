@@ -19,9 +19,9 @@ concurrency:
 
 jobs:
   public-seo-audit:
-    name: Sample public WordPress pages (no changes)
+    name: Audit all sitemap URLs, read-only
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 15
     steps:
       - name: Check out public repository
         uses: actions/checkout@v4
