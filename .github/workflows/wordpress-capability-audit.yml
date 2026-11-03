@@ -1,0 +1,30 @@
+name: Alpen Crew — WordPress Capability Audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/wordpress-capability-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect-wordpress:
+    name: Private-API capability checks (no changes)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment:
+      name: alpencrew-wordpress
+      deployment: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Read only WordPress API capability inventory
+        env:
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APPLICATION_PASSWORD: ${{ secrets.WP_APPLICATION_PASSWORD }}
+        run: python scripts/wordpress_capability_audit.py
