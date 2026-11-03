@@ -1,6 +1,11 @@
 name: Alpen Crew — Free Read-Only SEO Audit
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/public_seo_audit.py"
+      - ".github/workflows/public-seo-audit.yml"
   workflow_dispatch:
   schedule:
     - cron: "0 5 * * 1"
