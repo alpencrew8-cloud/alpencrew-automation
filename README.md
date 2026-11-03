@@ -35,5 +35,7 @@ For actual WordPress editing through the REST API, a separate approved integrati
 
 ## Free authenticated WordPress connection — next phase
 
-The secure, **manual-only** API authentication test is committed, but credentials are **not configured**. The owner must complete the one-time [secure WordPress connection guide](docs/secure-wordpress-connection.md), then run the [authenticated API test](.github/workflows/wordpress-auth-test.yml). This test will only read the current user's WordPress REST API identity; it cannot edit or publish website content.
+**Connection verified on 2026-11-03:** [GitHub Actions authentication test — success](https://github.com/alpencrew8-cloud/alpencrew-automation/actions/runs/41663708582). WordPress accepted the Application Password via the authenticated REST API. No WordPress content was changed. The [API test workflow](.github/workflows/wordpress-auth-test.yml) is manual-only again. **Automated website editing and publishing remain disabled** pending dry-run, backups, owner-reviewed scope and access-control checks.
+
+Security: this is a public repository with collaborators who have write access. Do not assume encrypted environment secrets alone protect privileged WordPress access from changes to workflow code. Restrict repository write access, review changes, and use a dedicated least-privileged WordPress account for any future production automation.
 
