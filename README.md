@@ -48,3 +48,15 @@ Security: this is a public repository with collaborators who have write access. 
 - [Read-only frontend browser script](scripts/frontend_smoke_test.py)
 
 No WordPress production writes have been performed; owner-reviewed approval and backup verification are required first.
+
+## Execution update: 3 November 2026
+
+**Work performed through the connected ChatGPT GitHub collaborator, with no production edits:**
+
+- [Draft PR #1 — owner-reviewed safety gate and implementation](https://github.com/alpencrew8-cloud/alpencrew-automation/pull/1).
+- [Execution batch 01 with exact tested URLs, commits, rollout gates and statuses](reports/2026-11-03-execution-batch-01.md).
+- [SEO public before-snapshot GitHub Actions — success, 3/3 tests, 7/7 URLs HTTP 200](https://github.com/alpencrew8-cloud/alpencrew-automation/actions/runs/41699002516).
+- [Responsive category/product browser QA — success, 10/10 page loads HTTP 200](https://github.com/alpencrew8-cloud/alpencrew-automation/actions/runs/41699809581).
+- [Security/restore requirements](docs/production-safety-gate.md); [non-live homepage content/SEO pilot](proposals/2026-11-03-homepage-b2b-seo-pilot.md).
+
+**Do not confuse prepared GitHub code with a deployed WordPress fix.** The owner must configure branch and environment controls and verify private full-site restoration before approving a live pilot.
