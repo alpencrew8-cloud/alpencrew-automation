@@ -60,3 +60,14 @@ No WordPress production writes have been performed; owner-reviewed approval and 
 - [Security/restore requirements](docs/production-safety-gate.md); [non-live homepage content/SEO pilot](proposals/2026-11-03-homepage-b2b-seo-pilot.md).
 
 **Do not confuse prepared GitHub code with a deployed WordPress fix.** The owner must configure branch and environment controls and verify private full-site restoration before approving a live pilot.
+
+## Execution batch 02 — 4 November 2026
+
+Read the [complete second execution report](reports/2026-11-04-execution-batch-02.md) for exact statuses, inspected URLs, test output and production blockers.
+
+- [Buyer quote/contact journey audit 41701613912](https://github.com/alpencrew8-cloud/alpencrew-automation/actions/runs/41701613912) **success**, 14/14 HTTP 200 and 3/3 tests. Contact form did not expose the major business-qualification fields in tested renderings.
+- [Homepage SEO exact before/after proposal 41701959078](https://github.com/alpencrew8-cloud/alpencrew-automation/actions/runs/41701959078) **success**, 4/4 offline tests. Owner-review manifest produced; **not live**.
+- [WordPress RFQ plugin candidate](plugins/alpencrew-b2b-rfq/README.md) (first-party shortcode, privacy/recipient gate, WooCommerce product context, anti-spam); [PHP offline QA 41702672610](https://github.com/alpencrew8-cloud/alpencrew-automation/actions/runs/41702672610) **success**. **Not installed**.
+- [PR #1](https://github.com/alpencrew8-cloud/alpencrew-automation/pull/1) remains owner-review pending, branch \`main\` unprotected, and no production WordPress edits have been made.
+
+**P0 gate remains mandatory:** owner-enabled GitHub protections and independent reviewer, restorable off-site WordPress backup, dedicated lower-privilege credentials, exact pilot scope approval and rollback tests.
