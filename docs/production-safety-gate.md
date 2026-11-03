@@ -45,3 +45,12 @@
 - GitHub branch/environment protections: **NOT VERIFIED**.
 - Rollback test: **NOT VERIFIED**.
 - Production edit authorization: **NO**.
+
+## GitHub Free owner setup (public repo)
+
+This repository is public; [GitHub branch protection](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) and [required environment reviewers](https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments) can be used on GitHub Free for public repositories.
+
+- Owner → Repository **Settings → Branches**: protect \`main\`; require pull request and owner approval; block direct pushes/force-pushes and branch deletion as supported. Owner should verify the effective rules after saving.
+- Owner → **Settings → Environments → alpencrew-wordpress**: configure required reviewer \`alpencrew8-cloud\`, block self-approval where supported and permit only the intended protected deployment branch. A collaborator's approval must not substitute for independent owner approval.
+- Review \`.github/CODEOWNERS\` in PR #1 as an additional review request. It is **not** enforcement until appropriate branch protection is enabled.
+- Keep the existing privileged workflow secret disabled or unexposed until both the owner review gate and credential reduction have been verified.
