@@ -1,0 +1,43 @@
+name: Alpen Crew — Public B2B Enquiry Flow Audit (NO SECRETS)
+
+on:
+  push:
+    branches:
+      - execution/2026-11-03-alpencrew-safety-pilot
+    paths:
+      - "scripts/b2b_enquiry_audit.py"
+      - "tests/test_b2b_enquiry_audit.py"
+      - ".github/workflows/b2b-enquiry-readonly.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  b2b-enquiry-readonly:
+    name: Inspect B2B quote journey (GET only, no submissions)
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install public browser audit dependencies
+        run: |
+          python -m pip install playwright
+          python -m playwright install chromium
+      - name: Offline validation of form field classification
+        run: python -m unittest discover -s tests -p 'test_b2b_enquiry_audit.py' -v
+      - name: Review rendered quote/contact paths without submitting any form
+        run: python scripts/b2b_enquiry_audit.py
+      - name: Retain public schema and non-sensitive link report for 7 days
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alpencrew-public-b2b-enquiry-flow
+          path: b2b-enquiry-audit-out/
+          if-no-files-found: ignore
+          retention-days: 7
