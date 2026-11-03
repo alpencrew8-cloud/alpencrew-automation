@@ -32,3 +32,8 @@ It also runs automatically every Monday at 05:00 UTC (10:00 PKT) and when the ap
 - [First verified audit report](reports/2026-11-03-public-seo-audit.md)
 
 For actual WordPress editing through the REST API, a separate approved integration and secure authentication will be required. That capability is **not yet enabled**.
+
+## Free authenticated WordPress connection — next phase
+
+The secure, **manual-only** API authentication test is committed, but credentials are **not configured**. The owner must complete the one-time [secure WordPress connection guide](docs/secure-wordpress-connection.md), then run the [authenticated API test](.github/workflows/wordpress-auth-test.yml). This test will only read the current user's WordPress REST API identity; it cannot edit or publish website content.
+
