@@ -2,10 +2,6 @@ name: Alpen Crew — Free Frontend Browser Audit
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/frontend-browser-audit.yml'
 
 permissions:
   contents: read
