@@ -1,0 +1,33 @@
+name: Alpen Crew — Secure WordPress API Test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: alpencrew-wordpress-auth-test
+  cancel-in-progress: false
+
+jobs:
+  verify-wordpress-access:
+    name: Verify read-only WordPress API authentication
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment:
+      name: alpencrew-wordpress
+      deployment: false
+    steps:
+      - name: Check out reviewed automation code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify WordPress account access (read only)
+        env:
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APPLICATION_PASSWORD: ${{ secrets.WP_APPLICATION_PASSWORD }}
+        run: python scripts/wordpress_auth_healthcheck.py
