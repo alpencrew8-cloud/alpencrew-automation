@@ -1,0 +1,32 @@
+name: Alpen Crew — Wholesale RFQ Plugin Offline QA (NO SECRETS)
+
+on:
+  push:
+    branches:
+      - execution/2026-11-03-alpencrew-safety-pilot
+    paths:
+      - "plugins/alpencrew-b2b-rfq/alpencrew-b2b-rfq.php"
+      - "tests/rfq_plugin_smoke.php"
+      - ".github/workflows/rfq-plugin-offline-qa.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rfq-plugin-offline-qa:
+    name: PHP lint + isolated form security smoke test (no mail/network)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: PHP CLI version (runner)
+        run: php --version
+      - name: Syntax check
+        run: |
+          php -l plugins/alpencrew-b2b-rfq/alpencrew-b2b-rfq.php
+          php -l tests/rfq_plugin_smoke.php
+      - name: Offline WordPress stub security / field-schema checks
+        run: php tests/rfq_plugin_smoke.php
