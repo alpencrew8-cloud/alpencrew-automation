@@ -59,6 +59,20 @@ function acrfq_field($source, $key, $limit = 200, $multiline = false) {
     return function_exists('mb_substr') ? mb_substr($value, 0, $limit) : substr($value, 0, $limit);
 }
 
+function acrfq_current_product_context() {
+    $id = 0;
+    if (function_exists('is_singular') && is_singular('product')) {
+        $id = (int) get_queried_object_id();
+    } elseif (isset($_GET['product_id']) && is_string($_GET['product_id'])) {
+        // A product ID is public catalog metadata, never a buyer identifier.
+        $id = absint(wp_unslash($_GET['product_id']));
+    }
+    if ($id > 0 && 'product' === get_post_type($id) && 'publish' === get_post_status($id)) {
+        return sanitize_text_field(get_the_title($id) . ' — ' . get_permalink($id));
+    }
+    return '';
+}
+
 function acrfq_quote_form() {
     if (!acrfq_ready()) {
         return '<p class="alpencrew-rfq-unavailable">The business quotation form is not yet available. Please use the contact page.</p>';
@@ -92,7 +106,7 @@ function acrfq_quote_form() {
       <p><label for="acrfq-country">Business country *</label>
         <input id="acrfq-country" name="acrfq[country]" type="text" maxlength="90" required autocomplete="country-name"></p>
       <p><label for="acrfq-product">Product/category or existing Alpen Crew product URL *</label>
-        <input id="acrfq-product" name="acrfq[product]" type="text" maxlength="200" required></p>
+        <input id="acrfq-product" name="acrfq[product]" type="text" maxlength="200" value="<?php echo esc_attr(acrfq_current_product_context()); ?>" required></p>
       <p><label for="acrfq-quantity">Requested quantity (pieces) *</label>
         <input id="acrfq-quantity" name="acrfq[quantity]" type="number" min="1" max="1000000" step="1" required inputmode="numeric"></p>
       <p><label for="acrfq-sizes">Size breakdown</label>
