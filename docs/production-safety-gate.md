@@ -54,3 +54,10 @@ This repository is public; [GitHub branch protection](https://docs.github.com/en
 - Owner → **Settings → Environments → alpencrew-wordpress**: configure required reviewer \`alpencrew8-cloud\`, block self-approval where supported and permit only the intended protected deployment branch. A collaborator's approval must not substitute for independent owner approval.
 - Review \`.github/CODEOWNERS\` in PR #1 as an additional review request. It is **not** enforcement until appropriate branch protection is enabled.
 - Keep the existing privileged workflow secret disabled or unexposed until both the owner review gate and credential reduction have been verified.
+
+## Quote form and homepage owner-review gate — batch 02
+
+- [Homepage metadata before/after manifest](../scripts/seo_pilot_manifest.py) and [recorded verified run](https://github.com/alpencrew8-cloud/alpencrew-automation/actions/runs/41701959078) are **PREPARED only**.
+- [RFQ shortcode candidate](../plugins/alpencrew-b2b-rfq/README.md) passed offline syntax/contract checks but **has not been installed**. Owner must confirm whether to extend the current contact-form integration or adopt this optional shortcode, and configure a verified recipient mailbox and a published privacy page.
+- Do **not** move stored or transmitted real buyer details into GitHub logs/artifacts. Test only on private staging with synthetic enquiries until a lawful handling and secure notification path is validated.
+- No production change can be treated as complete until live frontend verification and the recipient's successful test inbox receipt are proven.
