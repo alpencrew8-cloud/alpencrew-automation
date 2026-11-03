@@ -437,3 +437,26 @@ The operator then handles research, drafting, code changes, auditing, validation
 
 **Change log:**
 - 2026-11-03: Master plan generated from verified audits, external standards and identified business goals. Production changes explicitly not authorized under this document alone.
+
+---
+
+## Execution addendum — 3 November 2026 (first controlled code batch)
+
+**Master-plan status:** audited and first automation code prepared; no live WordPress SEO/content/theme changes. See [execution batch 01](../reports/2026-11-03-execution-batch-01.md), [P0 security gate](../docs/production-safety-gate.md), [draft PR #1](https://github.com/alpencrew8-cloud/alpencrew-automation/pull/1).
+
+- GitHub repository/collaborator access verified; \`main\` is not protected and no repository rulesets were detected.
+- Public-only SEO pilot [run 41699002516](https://github.com/alpencrew8-cloud/alpencrew-automation/actions/runs/41699002516): success, 3 automated tests passed, 7 live URLs HTTP 200, metadata gaps reconfirmed.
+- Public-only responsive product/category QA [run 41699809581](https://github.com/alpencrew8-cloud/alpencrew-automation/actions/runs/41699809581): success, ten page loads HTTP 200, zero sampled JavaScript page errors, zero overflow and visibly broken images in sampled views; H1 gaps persist on home/category.
+- Read-only workflows, tests, owner CODEOWNERS, backup/authorization checklist and a homepage editorial pilot prepared in the GitHub branch. No WordPress secrets accessed by new workflows.
+- **Blocked production:** restricted application credentials; enforceable repository/environment reviews; verified private full-site restore; exact owner approval of the pilot. Do not start live production work before these gates are passed.
+
+---
+
+## Execution addendum — 4 November 2026 (batch 02)
+
+Continued from the owner-controlled GitHub repository in Chat Mode. **All work remained read-only or in an unmerged PR branch; zero live WordPress changes.** Detailed evidence: [batch 02 report](../reports/2026-11-04-execution-batch-02.md).
+
+- [B2B funnel audit 41701613912](https://github.com/alpencrew8-cloud/alpencrew-automation/actions/runs/41701613912) verified 14 live page/view checks; form fields in the tested contact/product pages were not sufficient to capture a complete bulk-quotation specification. Existing contact links lead to \`/contact-us/\`. No live submission/delivery performed.
+- [Exact homepage SEO approval manifest 41701959078](https://github.com/alpencrew8-cloud/alpencrew-automation/actions/runs/41701959078) passed 4 unit tests; public before metadata hashed and editable title/H1/description/OG proposals recorded. No plugin SEO template changes yet.
+- [WordPress B2B RFQ shortcode candidate](../plugins/alpencrew-b2b-rfq/README.md) added with recipient/privacy gating, validation, email handoff and published-product context. [PHP lint and offline contract run 41702672610](https://github.com/alpencrew8-cloud/alpencrew-automation/actions/runs/41702672610) **success**. No installation, SMTP test or real lead capture.
+- Security gates remain unmet (unprotected default branch, no rulesets, no verified private restore, and no narrow automation credentials). Owner review requested on [PR #1](https://github.com/alpencrew8-cloud/alpencrew-automation/pull/1); it is not a production authorization.

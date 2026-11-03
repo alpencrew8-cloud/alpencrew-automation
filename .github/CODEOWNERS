@@ -1,0 +1,5 @@
+# Request review from repository owner on every pull request.
+# Enforcement requires owner-enabled branch protection / rulesets.
+* @alpencrew8-cloud
+/.github/workflows/ @alpencrew8-cloud
+/scripts/ @alpencrew8-cloud
