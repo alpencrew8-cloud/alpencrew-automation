@@ -1,0 +1,39 @@
+name: Alpen Crew — Homepage SEO Before/After Approval Manifest (NO SECRETS)
+
+on:
+  push:
+    branches:
+      - execution/2026-11-03-alpencrew-safety-pilot
+    paths:
+      - "scripts/seo_pilot_manifest.py"
+      - "tests/test_seo_pilot_manifest.py"
+      - ".github/workflows/homepage-seo-manifest-readonly.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  homepage-seo-preview:
+    name: Verify homepage and prepare exact before/after — no writes
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run offline manifest and canonical safety tests
+        run: python -m unittest discover -s tests -p 'test_seo_pilot_manifest.py' -v
+      - name: Read public homepage and generate change-only approval manifest
+        run: python -m scripts.seo_pilot_manifest
+      - name: Retain approval document (public metadata only)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alpencrew-homepage-seo-approval-manifest
+          path: seo-proposal-out/
+          if-no-files-found: ignore
+          retention-days: 7
