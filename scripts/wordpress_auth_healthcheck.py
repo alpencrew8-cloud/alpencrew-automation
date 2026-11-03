@@ -24,6 +24,12 @@ def main():
         print("NOT_CONFIGURED: Missing GitHub environment secrets. No request made.")
         return 2
 
+    class NoRedirect(urllib.request.HTTPRedirectHandler):
+        # Never forward an Authorization header to a redirected destination.
+        def redirect_request(self, req, fp, code, msg, headers, newurl):
+            return None
+
+    opener = urllib.request.build_opener(NoRedirect)
     auth = base64.b64encode(f"{username}:{password}".encode("utf-8")).decode("ascii")
     request = urllib.request.Request(
         ENDPOINT,
@@ -34,7 +40,7 @@ def main():
         },
     )
     try:
-        with urllib.request.urlopen(request, timeout=20) as response:
+        with opener.open(request, timeout=20) as response:
             target = urllib.parse.urlparse(response.url)
             if target.scheme != "https" or target.hostname != "alpencrew.com":
                 print("FAIL: Unexpected redirect target. Review the website configuration.")
