@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read-only public SEO sampler for alpencrew.com. Standard library only.
+"""Read-only, sitemap-wide public SEO audit for alpencrew.com. Standard library only.
 
 No credentials, WordPress writes, paid APIs, or changes to site content.
 """
@@ -15,7 +15,7 @@ import xml.etree.ElementTree as ET
 
 SITE = "https://alpencrew.com"
 ALLOWED_HOSTS = {"alpencrew.com", "www.alpencrew.com"}
-MAX_PAGES = 25
+MAX_PAGES = 260
 USER_AGENT = "AlpenCrewPublicSEOAudit/1.0"
 
 
@@ -134,7 +134,16 @@ def main():
         u for u in sorted(urls, key=priority) if u.rstrip("/") != SITE
     ][: MAX_PAGES - 1]
     detail = []
+    titles = {}
+    meta_descriptions = {}
+    types = Counter()
     for pos, url in enumerate(sample_urls):
+        path = urlparse(url).path
+        category = ("product" if "/product/" in path else
+                    "product category" if "/product-category/" in path else
+                    "blog / archive" if "/category/" in path or "/tag/" in path else
+                    "other page")
+        types[category] += 1
         try:
             status, content_type, body = fetch(url)
             issues = []
@@ -145,8 +154,18 @@ def main():
             else:
                 tags = PageTags()
                 tags.feed(body.decode("utf-8", "replace"))
-                if not tags.title.strip():
+                title = tags.title.strip()
+                desc = tags.meta.get("description", "").strip()
+                if not title:
                     issues.append("missing title")
+                else:
+                    titles.setdefault(title.casefold(), []).append(url)
+                if desc:
+                    meta_descriptions.setdefault(desc.casefold(), []).append(url)
+                if len(title) > 65:
+                    issues.append("title over 65 characters (review)")
+                if len(desc) > 165:
+                    issues.append("meta description over 165 characters (review)")
                 if not tags.meta.get("description", "").strip():
                     issues.append("missing meta description")
                 if not tags.canonicals:
@@ -168,24 +187,37 @@ def main():
             totals["connection error"] += 1
             detail.append((url, [type(exc).__name__]))
         if pos < len(sample_urls) - 1:
-            time.sleep(0.4)
+            time.sleep(0.25)
 
+    duplicate_titles = {k: v for k, v in titles.items() if len(v) > 1}
+    duplicate_descriptions = {k: v for k, v in meta_descriptions.items() if len(v) > 1}
+    totals["duplicate titles (URLs affected)"] = sum(len(v) for v in duplicate_titles.values())
+    totals["duplicate meta descriptions (URLs affected)"] = sum(len(v) for v in duplicate_descriptions.values())
     report = [
         "# Alpen Crew — Public, Read-only SEO Audit",
         f"Generated: {datetime.now(timezone.utc):%Y-%m-%d %H:%M UTC}",
         "",
         "No API credentials used. No WordPress changes performed.",
-        "Results are limited to a public HTML sample; not an indexing or traffic report.",
+        "Results cover public URLs discovered in XML sitemaps, not necessarily all live URLs, indexing, rankings, or traffic.",
         "",
         "## Connectivity and scope", *results,
-        f"- URLs sampled: {len(sample_urls)}", "",
+        f"- URLs checked: {len(sample_urls)}", "",
+        "## URLs by type",
+        *[f"- {kind}: {count}" for kind, count in sorted(types.items())],
+        "",
         "## Observations", "| Check | Sample count |", "|---|---:|",
     ]
     report.extend(f"| {key} | {value} |" for key, value in sorted(totals.items()))
-    report.extend(["", "## Sampled pages", "| URL | Findings |", "|---|---|"])
+    report.extend(["", "## Duplicate page titles (groups)", ""])
+    if duplicate_titles:
+        for _, matches in list(duplicate_titles.items())[:20]:
+            report.extend(["- " + " | ".join(matches)])
+    else:
+        report.append("- No duplicate titles found in inspected pages")
+    report.extend(["", "## Pages inspected", "| URL | Findings |", "|---|---|"])
     for url, issues in detail:
         report.append(f"| {url} | {', '.join(issues) if issues else 'No sampled flags'} |")
-    report.extend(["", "Interpretation: manually validate before implementing SEO changes."])
+    report.extend(["", "Interpretation: manually validate before implementing SEO changes. This includes only sitemap-discoverable URLs; a browser render and Search Console can reveal more."])
     text = "\n".join(report) + "\n"
     print(text)
     summary = os.getenv("GITHUB_STEP_SUMMARY")
