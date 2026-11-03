@@ -2,7 +2,7 @@
 
 Owner: `alpencrew8-cloud` · Website: https://alpencrew.com
 
-This repository uses **free standard GitHub-hosted Actions** and a **read-only public SEO sampler**. No site administrator credentials, paid subscriptions, or plugins are needed for the first phase.
+This repository uses **free standard GitHub-hosted Actions** and a **read-only full-sitemap public SEO auditor**. No site administrator credentials, paid subscriptions, or plugins are needed for the first phase.
 
 ## Run the first audit
 
@@ -17,8 +17,8 @@ It also runs automatically every Monday at 05:00 UTC (10:00 PKT) and when the ap
 
 ## Scope and safety
 
-- Reads only public `/wp-json/`, `/robots.txt`, public XML sitemaps, and up to 25 pages.
-- Tests a sample for titles, meta descriptions, canonicals, H1 counts, Open Graph and JSON-LD.
+- Reads only public `/wp-json/`, `/robots.txt`, public XML sitemaps, and up to 260 sitemap-discoverable URLs (211 checked successfully on 2026-11-03).
+- Checks titles, duplicate titles, meta descriptions, canonicals, H1 counts, Open Graph and JSON-LD on sitemap-discoverable URLs.
 - **Does not** edit WordPress, publish content, update plugins, crawl all products, or infer real Google traffic.
 - Uses only `ubuntu-latest`, Python standard library and GitHub's official checkout/setup-python actions.
 - Never commit passwords, WordPress Application Passwords, access tokens, customer lists, orders, private backups or environment files to this public repository.
@@ -39,3 +39,12 @@ For actual WordPress editing through the REST API, a separate approved integrati
 
 Security: this is a public repository with collaborators who have write access. Do not assume encrypted environment secrets alone protect privileged WordPress access from changes to workflow code. Restrict repository write access, review changes, and use a dedicated least-privileged WordPress account for any future production automation.
 
+
+## Full site, frontend and API audits — 2026-11-03
+
+- [Full 211-URL SEO audit and repair priorities](reports/2026-11-03-full-211-url-seo-frontend-audit.md)
+- [WordPress API and plugin capability audit](reports/2026-11-03-wordpress-capabilities.md)
+- [Desktop and mobile screenshot test](https://github.com/alpencrew8-cloud/alpencrew-automation/actions/runs/41665480937)
+- [Read-only frontend browser script](scripts/frontend_smoke_test.py)
+
+No WordPress production writes have been performed; owner-reviewed approval and backup verification are required first.
