@@ -11,7 +11,9 @@ This repository uses **free standard GitHub-hosted Actions** and a **read-only p
 3. Click **Run workflow** → choose `main` → **Run workflow**.
 4. Open the completed run → **Summary** to see the URL sample and SEO flags.
 
-It also runs automatically every Monday at 05:00 UTC (10:00 PKT), subject to GitHub's schedule availability.
+It also runs automatically every Monday at 05:00 UTC (10:00 PKT) and when the approved SEO scanner/workflow files are updated on `main` (GitHub may delay scheduled runs).
+
+**First verified automatic run:** [Run #1 — success](https://github.com/alpencrew8-cloud/alpencrew-automation/actions/runs/41660001499). The recorded findings are in [2026-11-03 public SEO audit](reports/2026-11-03-public-seo-audit.md).
 
 ## Scope and safety
 
@@ -26,5 +28,7 @@ It also runs automatically every Monday at 05:00 UTC (10:00 PKT), subject to Git
 
 - [Read-only audit script](scripts/public_seo_audit.py)
 - [GitHub Actions workflow](.github/workflows/public-seo-audit.yml)
+- [Future authenticated API connectivity check (not yet configured)](scripts/wordpress_auth_healthcheck.py)
+- [First verified audit report](reports/2026-11-03-public-seo-audit.md)
 
 For actual WordPress editing through the REST API, a separate approved integration and secure authentication will be required. That capability is **not yet enabled**.
