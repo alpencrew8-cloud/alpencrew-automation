@@ -1,0 +1,30 @@
+# Local credentials and private environment variables
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+secrets.json
+application-password.txt
+
+# Local backups and user/customer exports: NEVER publish to this public repository
+*.sql
+*.sql.gz
+*.zip
+*.tar
+*.tar.gz
+*.bak
+backups/
+exports/
+private/
+customer-data/
+
+# Python temporary files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
