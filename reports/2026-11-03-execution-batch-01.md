@@ -50,3 +50,17 @@ Branch: \`execution/2026-11-03-alpencrew-safety-pilot\`
 ## Next executable step
 
 Review draft PR, configure owner-controlled security and reliable backup restoration; then prepare a strict one-page authenticated WordPress read-only diff/preview using least-privilege credentials. Only a separately approved scoped pilot may modify production, followed by live output verification.
+
+## Additional automated frontend QA (same batch)
+
+- Source: [Actions run 41699809581 — success](https://github.com/alpencrew8-cloud/alpencrew-automation/actions/runs/41699809581).
+- Added [5-page responsive Playwright check](../scripts/frontend_pilot_smoke.py) and [free credential-free workflow](../.github/workflows/frontend-pilot-readonly.yml).
+- HTTP 200 across **10/10** browser requests (5 public pages at **390px mobile / 1440px desktop**).
+- Sampled homepage; men category; women's Dirndl category; men's green Lederhosen product; women's blue/gold Dirndl product.
+- **0** sampled JavaScript page errors, **0** detected horizontal overflow and **0** visibly broken images across all ten sampled views.
+- The homepage and two tested product-category pages had no H1 in either viewport; both tested product pages had one H1.
+- Public screenshot/JSON artifact retained for 7 days on the run. No private user content or auth involved.
+- Created [.github/CODEOWNERS](../.github/CODEOWNERS) requesting owner review of all changes, especially privileged workflow code. **Not an enforced protection until owner enables branch-review rules**.
+- Verified GitHub Free supports branch protection and environment approval controls for **public** repositories; no paid plan required. See [official branch protection](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) and [environment protections](https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments).
+
+**Pull request:** [#1 — P0 gate + free read-only SEO/frontend pilots](https://github.com/alpencrew8-cloud/alpencrew-automation/pull/1) (draft for review). The branch contains preparatory code and documentation only. **Live WordPress fixes remain zero.**
