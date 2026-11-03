@@ -437,3 +437,15 @@ The operator then handles research, drafting, code changes, auditing, validation
 
 **Change log:**
 - 2026-11-03: Master plan generated from verified audits, external standards and identified business goals. Production changes explicitly not authorized under this document alone.
+
+---
+
+## Execution addendum — 3 November 2026 (first controlled code batch)
+
+**Master-plan status:** audited and first automation code prepared; no live WordPress SEO/content/theme changes. See [execution batch 01](../reports/2026-11-03-execution-batch-01.md), [P0 security gate](../docs/production-safety-gate.md), [draft PR #1](https://github.com/alpencrew8-cloud/alpencrew-automation/pull/1).
+
+- GitHub repository/collaborator access verified; \`main\` is not protected and no repository rulesets were detected.
+- Public-only SEO pilot [run 41699002516](https://github.com/alpencrew8-cloud/alpencrew-automation/actions/runs/41699002516): success, 3 automated tests passed, 7 live URLs HTTP 200, metadata gaps reconfirmed.
+- Public-only responsive product/category QA [run 41699809581](https://github.com/alpencrew8-cloud/alpencrew-automation/actions/runs/41699809581): success, ten page loads HTTP 200, zero sampled JavaScript page errors, zero overflow and visibly broken images in sampled views; H1 gaps persist on home/category.
+- Read-only workflows, tests, owner CODEOWNERS, backup/authorization checklist and a homepage editorial pilot prepared in the GitHub branch. No WordPress secrets accessed by new workflows.
+- **Blocked production:** restricted application credentials; enforceable repository/environment reviews; verified private full-site restore; exact owner approval of the pilot. Do not start live production work before these gates are passed.
