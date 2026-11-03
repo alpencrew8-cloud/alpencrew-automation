@@ -1,0 +1,36 @@
+name: Alpen Crew — Free Frontend Browser Audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/frontend-browser-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  frontend:
+    name: Public desktop and mobile smoke test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install open-source browser testing tools
+        run: |
+          python -m pip install playwright
+          python -m playwright install chromium
+      - name: Test public homepage only
+        run: python scripts/frontend_smoke_test.py
+      - name: Keep public screenshots for visual review (7 days)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alpencrew-public-homepage-screenshots
+          path: frontend-audit-artifacts/*.png
+          if-no-files-found: ignore
+          retention-days: 7
