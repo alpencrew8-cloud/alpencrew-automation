@@ -1,0 +1,28 @@
+name: Alpen Crew — Free Read-Only SEO Audit
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 5 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: alpencrew-public-seo-audit
+  cancel-in-progress: true
+
+jobs:
+  public-seo-audit:
+    name: Sample public WordPress pages (no changes)
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Check out public repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run read-only audit
+        run: python scripts/public_seo_audit.py
