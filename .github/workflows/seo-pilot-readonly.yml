@@ -1,0 +1,41 @@
+name: Alpen Crew — Public SEO Pilot Baseline (NO SECRETS)
+
+on:
+  push:
+    branches:
+      - execution/2026-11-03-alpencrew-safety-pilot
+    paths:
+      - "scripts/seo_baseline_pilot.py"
+      - "tests/test_seo_baseline_pilot.py"
+      - ".github/workflows/seo-pilot-readonly.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-seo-pilot:
+    name: Offline tests + public GET-only baseline
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - name: Checkout (no persisted GitHub token)
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify parser and allowlist without network
+        run: python -m unittest discover -s tests -p 'test_seo_baseline_pilot.py' -v
+      - name: Read public pilot URLs only
+        run: python scripts/seo_baseline_pilot.py --output-dir seo-baseline-out
+      - name: Upload public report (no credentials, no client records)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alpencrew-public-seo-before-snapshot
+          path: seo-baseline-out/
+          if-no-files-found: ignore
+          retention-days: 7
