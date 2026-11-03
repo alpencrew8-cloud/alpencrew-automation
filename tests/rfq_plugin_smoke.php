@@ -19,6 +19,14 @@ function wp_nonce_field($action, $field, $referer, $display) {
     return '<input type="hidden" name="' . $field . '" value="offline-test-nonce">';
 }
 function admin_url($path) { return 'https://alpencrew.com/wp-admin/' . $path; }
+$GLOBALS['mock_is_product'] = false;
+function is_singular($type) { return 'product' === $type && $GLOBALS['mock_is_product']; }
+function get_queried_object_id() { return 123; }
+function absint($value) { return abs((int) $value); }
+function get_post_type($id) { return 'product'; }
+function get_post_status($id) { return (int) $id === 123 ? 'publish' : 'draft'; }
+function get_the_title($id) { return 'Lederhosen Men Green'; }
+function get_permalink($id) { return 'https://alpencrew.com/product/lederhosen-men-short-green/'; }
 
 require dirname(__DIR__) . '/plugins/alpencrew-b2b-rfq/alpencrew-b2b-rfq.php';
 
@@ -46,6 +54,17 @@ foreach (array('company', 'contact_name', 'email', 'country', 'product',
 must(strpos($form, 'alpencrew_bulk_quote_nonce') !== false, 'Missing CSRF nonce');
 must(strpos($form, 'alpencrew_bulk_quote_submit') !== false, 'Missing POST handler action');
 must(strpos($form, 'https://alpencrew.com/privacy-policy/') !== false, 'Missing policy link');
+$GLOBALS['mock_is_product'] = true;
+$product_form = acrfq_quote_form();
+must(strpos($product_form, 'value="Lederhosen Men Green — https://alpencrew.com/product/lederhosen-men-short-green/"') !== false,
+     'Product page should prefill only a validated live product');
+$GLOBALS['mock_is_product'] = false;
+$_GET['product_id'] = '999';
+must(acrfq_current_product_context() === '', 'Unpublished product must not be prefilled');
+$_GET['product_id'] = '123';
+must(strpos(acrfq_current_product_context(), 'Lederhosen Men Green') !== false,
+     'Published public WooCommerce product ID must be accepted');
+unset($_GET['product_id']);
 $GLOBALS['mock_privacy'] = '';
 must(strpos(acrfq_quote_form(), '<form') === false, 'Should not render a form without privacy policy');
 echo "SUCCESS: RFQ plugin offline security/schema tests passed. No WordPress writes or emails.\n";
